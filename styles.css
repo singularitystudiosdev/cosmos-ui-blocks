@@ -174,29 +174,23 @@ body {
   font: 620 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   letter-spacing: -0.1px; cursor: pointer;
   transition: background 0.15s ease, transform 0.14s ease, opacity 0.18s ease;
-  --speed: 3.5s;
-  --rainbow: conic-gradient(from var(--angle),
-    hsl(0 100% 50%), hsl(30 100% 50%), hsl(60 100% 50%), hsl(90 100% 50%),
-    hsl(120 100% 50%), hsl(150 100% 50%), hsl(180 100% 50%), hsl(210 100% 50%),
-    hsl(240 100% 50%), hsl(270 100% 50%), hsl(300 100% 50%), hsl(330 100% 50%), hsl(360 100% 50%));
+  --glow: #ffffff;
 }
 .q-go.is-idle { opacity: 0.42; }
 .q-go.is-arm { transform: scale(1.035); }
-@property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
-@keyframes spin-angle { to { --angle: 360deg; } }
 .q-go::before, .q-go::after {
-  content: ""; position: absolute; background: var(--rainbow);
+  content: ""; position: absolute; background: var(--glow);
   z-index: -1; opacity: 0; transition: opacity 250ms ease; pointer-events: none;
 }
 .q-go::before { inset: -3px; border-radius: 999px; filter: blur(16px); }
 .q-go::after { inset: -10px; border-radius: 999px; filter: blur(40px); }
 .q-go.is-bloom {
-  background: linear-gradient(180deg, #f2f3f7, #c9ccd6) padding-box, var(--rainbow) border-box;
+  background: linear-gradient(180deg, #f2f3f7, #c9ccd6) padding-box, var(--glow) border-box;
   border: 1px solid transparent;
-  animation: spin-angle var(--speed) linear infinite;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
-.q-go.is-bloom::before { opacity: 0.21; animation: spin-angle var(--speed) linear infinite; }
-.q-go.is-bloom::after { opacity: 0.12; animation: spin-angle var(--speed) linear infinite; }
+.q-go.is-bloom::before { opacity: 0.3; }
+.q-go.is-bloom::after { opacity: 0.16; }
 .q-go-kbd { font-weight: 500; opacity: 0.7; display: inline-flex; }
 .q-go-kbd svg { width: 12px; height: 12px; display: block; }
 

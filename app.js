@@ -57,7 +57,7 @@ const CHECK_IC = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" str
         select(i);
         await sleep(980);
       }
-      // the mascot's hover rainbow, armed on Continue once a choice is made
+      // a white bloom, armed on Continue once a choice is made
       go.classList.add("is-bloom");
       await sleep(2000);
       go.classList.remove("is-bloom");
