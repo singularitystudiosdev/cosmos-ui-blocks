@@ -1,0 +1,325 @@
+/* Cosmos UI blocks — three exported surfaces, each animated in its own box.
+   Palette, silver ring and motion curves taken verbatim from the source
+   surfaces (hero-loading-animations: .demo-card / .demo-think / .demo-step). */
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  padding: 48px 24px 72px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #f2f2f5;
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.05) 1.2px, transparent 1.4px) 0 0 / 20px 20px,
+    #0a0a0c;
+}
+
+/* ---------- page chrome ------------------------------------------------- */
+
+.head { max-width: 1400px; margin: 0 auto 36px; }
+.head h1 { margin: 0 0 8px; font-size: 24px; font-weight: 620; letter-spacing: -0.4px; }
+.head p { margin: 0; font-size: 13.5px; color: #8b90a0; letter-spacing: -0.1px; line-height: 1.55; }
+.head code {
+  font: 500 12.5px ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: rgba(255, 255, 255, 0.07); border-radius: 5px; padding: 2px 6px; color: #c9ccd6;
+}
+
+.grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 26px;
+  align-items: stretch;
+}
+@media (min-width: 1180px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* ---------- the labelled box -------------------------------------------- */
+
+.stage { display: flex; flex-direction: column; gap: 12px; min-width: 0; height: 100%; }
+
+.stage-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11.5px; font-weight: 600; letter-spacing: 0.55px; text-transform: uppercase;
+  color: #8b90a0;
+}
+.stage-label i {
+  width: 6px; height: 6px; border-radius: 50%; background: #5fd08a; flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(95, 208, 138, 0.5); animation: live 2.4s ease-out infinite;
+}
+@keyframes live {
+  0% { box-shadow: 0 0 0 0 rgba(95, 208, 138, 0.45); }
+  70% { box-shadow: 0 0 0 7px rgba(95, 208, 138, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(95, 208, 138, 0); }
+}
+
+.box {
+  position: relative;
+  flex: 1;
+  min-height: 268px;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 22px 18px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.008));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+.stage-note { font-size: 12px; color: #6b7080; letter-spacing: -0.05px; line-height: 1.5; }
+
+/* ---------- the metallic ring (the silver outline, 1:1) ----------------- */
+
+.ring { position: relative; border: none; }
+.ring::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px;
+  background: linear-gradient(135deg, #f4f5f8, #71757f 30%, #3c3f47 52%, #9a9ea9 72%, #e8eaf0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none; z-index: 2;
+}
+/* the travelling highlight that sweeps the ring — the live tell */
+.ring::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.95) 50%, transparent 62%);
+  background-size: 260% 100%; background-position: 200% 0;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none; z-index: 3; opacity: 0;
+}
+@keyframes ring-sweep {
+  0% { background-position: 200% 0; opacity: 0; }
+  12% { opacity: 0.9; }
+  88% { opacity: 0.9; }
+  100% { background-position: -60% 0; opacity: 0; }
+}
+.ring.is-sweep::after { animation: ring-sweep 1.4s ease-in-out; }
+
+/* ---------- shared motion ----------------------------------------------- */
+
+@keyframes shimmer { from { background-position: 120% 0; } to { background-position: -80% 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ======================================================================== */
+/* 1. QUESTION CARD — Cosmos AskUserQuestion                                */
+/* ======================================================================== */
+
+.q-card {
+  width: 100%; max-width: min(400px, 100%);
+  border-radius: 16px;
+  padding: 14px 16px 13px;
+  background: #111113;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  color: #e6e8ee;
+  font-size: 13px; letter-spacing: -0.1px;
+  animation: rise 0.3s ease-out backwards;
+}
+.q-card.is-out { animation: q-out 0.26s ease-in forwards; }
+@keyframes q-out { to { opacity: 0; transform: translateY(-6px) scale(0.985); } }
+
+.q-top { display: flex; align-items: center; gap: 8px; color: #8b90a0; font-size: 13px; font-weight: 500; letter-spacing: 0.1px; }
+.q-top > svg { width: 14px; height: 14px; flex-shrink: 0; color: #b9bcc6; }
+.q-min {
+  margin-left: auto; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center;
+  background: none; border: none; border-radius: 7px; color: #8b90a0; padding: 0; cursor: pointer;
+}
+.q-min svg { width: 13px; height: 13px; display: block; }
+
+.q-title { margin-top: 10px; font-size: 15.5px; font-weight: 620; letter-spacing: -0.25px; color: #f4f5f8; line-height: 1.3; }
+
+.q-body { margin-top: 11px; display: flex; flex-direction: column; gap: 6px; }
+
+.q-opt {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 12px; margin: 0;
+  background: #17171a; border: 1px solid rgba(255, 255, 255, 0.045); border-radius: 11px;
+  color: #c9ccd6; font: inherit; font-size: 13.5px; text-align: left; cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.14s ease;
+}
+.q-opt.is-sel { background: #202024; border-color: rgba(255, 255, 255, 0.14); color: #f0f1f5; }
+.q-opt.is-press { transform: scale(0.988); }
+
+/* the radio: a filled disc that pops on select */
+.q-radio {
+  width: 19px; height: 19px; flex-shrink: 0; border-radius: 50%;
+  background: #3a3a3e; position: relative;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.q-radio::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: #f7f8fa; transform: scale(0); opacity: 0;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.16s ease;
+}
+.q-opt.is-sel .q-radio { background: #2c2c31; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18); }
+.q-opt.is-sel .q-radio::after { transform: scale(1); opacity: 1; }
+.q-opt.is-pop .q-radio { animation: radio-pop 0.34s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes radio-pop { 0% { transform: scale(0.86); } 55% { transform: scale(1.12); } 100% { transform: scale(1); } }
+
+.q-foot { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 15px; }
+.q-skip {
+  background: none; border: none; color: #9aa0b4; font: inherit; font-size: 13px;
+  padding: 7px 11px; border-radius: 9px; cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.q-go {
+  position: relative; z-index: 0;
+  display: inline-flex; align-items: center; gap: 7px;
+  background: linear-gradient(180deg, #f2f3f7, #c9ccd6); color: #1a1a1c;
+  border: none; border-radius: 999px; padding: 7px 15px;
+  font: 620 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.1px; cursor: pointer;
+  transition: background 0.15s ease, transform 0.14s ease, opacity 0.18s ease;
+  --speed: 3.5s;
+  --rainbow: conic-gradient(from var(--angle),
+    hsl(0 100% 50%), hsl(30 100% 50%), hsl(60 100% 50%), hsl(90 100% 50%),
+    hsl(120 100% 50%), hsl(150 100% 50%), hsl(180 100% 50%), hsl(210 100% 50%),
+    hsl(240 100% 50%), hsl(270 100% 50%), hsl(300 100% 50%), hsl(330 100% 50%), hsl(360 100% 50%));
+}
+.q-go.is-idle { opacity: 0.42; }
+.q-go.is-arm { transform: scale(1.035); }
+@property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes spin-angle { to { --angle: 360deg; } }
+.q-go::before, .q-go::after {
+  content: ""; position: absolute; background: var(--rainbow);
+  z-index: -1; opacity: 0; transition: opacity 250ms ease; pointer-events: none;
+}
+.q-go::before { inset: -3px; border-radius: 999px; filter: blur(16px); }
+.q-go::after { inset: -10px; border-radius: 999px; filter: blur(40px); }
+.q-go.is-bloom {
+  background: linear-gradient(180deg, #f2f3f7, #c9ccd6) padding-box, var(--rainbow) border-box;
+  border: 1px solid transparent;
+  animation: spin-angle var(--speed) linear infinite;
+}
+.q-go.is-bloom::before { opacity: 0.21; animation: spin-angle var(--speed) linear infinite; }
+.q-go.is-bloom::after { opacity: 0.12; animation: spin-angle var(--speed) linear infinite; }
+.q-go-kbd { font-weight: 500; opacity: 0.7; display: inline-flex; }
+.q-go-kbd svg { width: 12px; height: 12px; display: block; }
+
+/* ======================================================================== */
+/* 2. THINKING — spinner + shimmer, then the Cursor-style step checklist     */
+/* ======================================================================== */
+
+.t-wrap { width: 100%; max-width: 400px; display: flex; flex-direction: column; }
+
+.t-think {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+  font: 500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.1px; color: #8b90a0;
+  animation: rise 0.24s ease-out;
+}
+.t-think svg { width: 13px; height: 13px; flex-shrink: 0; animation: spin 0.9s linear infinite; }
+.t-think span {
+  background: linear-gradient(90deg, #6f7484 20%, #e8eaf0 50%, #6f7484 80%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 1.6s -0.8s linear infinite;
+  filter: drop-shadow(0 0 5px rgba(232, 234, 240, 0.35));
+}
+
+.t-step {
+  align-self: stretch; display: flex; align-items: center; gap: 8px; margin-top: 11px;
+  font: 500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.1px; color: #9aa0b4;
+  animation: rise 0.2s ease-out;
+}
+.t-step svg { width: 13px; height: 13px; flex-shrink: 0; }
+.t-step.is-live svg { animation: t-pulse 1.1s ease-in-out infinite; }
+.t-step.is-live .t-scan { animation: t-scan 1.1s linear infinite; }
+@keyframes t-pulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+@keyframes t-scan { to { stroke-dashoffset: -21.4; } }
+.t-label {
+  background: linear-gradient(90deg, #9aa0b4 25%, #eceef4 50%, #9aa0b4 75%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 1.6s -0.8s linear infinite;
+}
+.t-detail { margin-left: auto; font-size: 11.5px; font-weight: 500; color: #6f7484; font-variant-numeric: tabular-nums; }
+.t-step.is-done { color: #6b7080; }
+.t-step.is-done svg { opacity: 0.55; animation: none; }
+.t-step.is-done .t-label { background: none; color: #6b7080; animation: none; -webkit-text-fill-color: currentColor; }
+.t-step.is-done .t-detail { color: #62677a; }
+
+.t-note {
+  align-self: flex-start; margin-top: 11px; font-size: 12px; color: #6b7080;
+  letter-spacing: -0.1px; animation: rise 0.22s ease-out;
+}
+
+/* ======================================================================== */
+/* 3. CODE BLOCK — file card, same silver outline                           */
+/* ======================================================================== */
+
+.c-card {
+  width: 100%; max-width: min(400px, 100%);
+  border-radius: 15px; overflow: hidden;
+  background: #101012;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  animation: rise 0.3s ease-out backwards;
+}
+.c-head {
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 12.5px; letter-spacing: -0.05px;
+}
+.c-chip {
+  width: 24px; height: 24px; flex-shrink: 0; border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.07); color: #b9bcc6;
+}
+.c-chip svg { width: 13px; height: 13px; display: block; }
+.c-name { color: #e9eaef; font-weight: 500; }
+.c-status {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 550; color: #5fd08a; letter-spacing: 0;
+}
+.c-status.is-writing { color: #9aa0b4; }
+.c-status i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.c-status.is-writing i { animation: t-pulse 1.05s ease-in-out infinite; }
+.c-status.is-pop { animation: c-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes c-pop { 0% { transform: scale(0.84); } 60% { transform: scale(1.07); } 100% { transform: scale(1); } }
+.c-copy {
+  background: none; border: none; padding: 3px; border-radius: 6px; color: #8b90a0;
+  cursor: pointer; display: inline-flex; transition: color 0.15s ease, background 0.15s ease;
+}
+.c-copy svg { width: 14px; height: 14px; display: block; }
+.c-copy.is-hit { color: #e8eaf0; background: rgba(255, 255, 255, 0.09); }
+
+.c-code {
+  margin: 0; padding: 11px 12px 13px;
+  font: 400 10.5px/1.8 ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  color: #c9c9cf; white-space: pre; overflow-x: auto; overscroll-behavior-x: contain;
+  tab-size: 2;
+}
+.c-code::-webkit-scrollbar { height: 6px; }
+.c-code::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.14); border-radius: 99px; }
+.c-line { display: block; opacity: 0; }
+.c-line.is-in { animation: c-in 0.16s ease-out forwards; }
+@keyframes c-in { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+.c-caret {
+  display: inline-block; width: 7px; height: 14px; margin-left: 1px; vertical-align: -2px;
+  background: #e8eaf0; opacity: 0.85; animation: c-blink 1s steps(1) infinite;
+}
+@keyframes c-blink { 0%, 49% { opacity: 0.85; } 50%, 100% { opacity: 0; } }
+
+/* token colours — matched to the exported card */
+.tk-tag { color: #ff7b93; }
+.tk-str { color: #6fd0e8; }
+.tk-key { color: #c58af9; }
+.tk-num { color: #d9a05b; }
+.tk-hl  { color: #f5b95c; }
+.tk-id  { color: #cbb88a; }
+.tk-pl  { color: #c9c9cf; }
+
+/* ---------- reduced motion ---------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+  .t-think span, .t-label { background: none; color: #c9ccd6; filter: none; -webkit-text-fill-color: currentColor; }
+  .c-line { opacity: 1; }
+  .ring::after { display: none; }
+}

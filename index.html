@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cosmos UI blocks — question, thinking, code</title>
+<meta name="description" content="Three Cosmos UI surfaces exported as self-animating blocks: the AskUserQuestion card, the thinking indicator, and the file/code card." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="head">
+  <h1>Cosmos UI blocks</h1>
+  <p>
+    Three surfaces exported from Cosmos, each in its own labelled box and running its own loop.
+    The question card and the thinking indicator are lifted verbatim from
+    <code>hero-loading-animations</code>; the code card is rebuilt from the exported screenshot,
+    carrying the same silver outline.
+  </p>
+</header>
+
+<main class="grid">
+
+  <!-- 1 ── QUESTION CARD ─────────────────────────────────────────────── -->
+  <section class="stage">
+    <div class="stage-label"><i></i>Question card</div>
+    <div class="box ring">
+      <div class="q-card ring" id="qCard">
+        <div class="q-top">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 3.2h7.6M4.8 3.2V2h2.4v1.2M3.4 3.2l.5 6.3c0 .5.4.9.9.9h2.4c.5 0 .9-.4.9-.9l.5-6.3"/></svg>
+          <span>Question</span>
+          <span class="q-min" role="button" aria-label="Collapse">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6h7"/></svg>
+          </span>
+        </div>
+
+        <div class="q-title">Want me to remove 17 unused rules?</div>
+
+        <div class="q-body" role="radiogroup" aria-label="Want me to remove 17 unused rules?">
+          <button class="q-opt" type="button" role="radio" aria-checked="false" data-i="0">
+            <span class="q-radio"></span><span>Remove all 17 — I don't need them</span>
+          </button>
+          <button class="q-opt" type="button" role="radio" aria-checked="false" data-i="1">
+            <span class="q-radio"></span><span>Review first — show each rule and its last-used date</span>
+          </button>
+          <button class="q-opt" type="button" role="radio" aria-checked="false" data-i="2">
+            <span class="q-radio"></span><span>Keep them — leave my setup alone</span>
+          </button>
+        </div>
+
+        <div class="q-foot">
+          <button class="q-skip" type="button">Skip</button>
+          <button class="q-go is-idle" type="button">
+            <span>Continue</span>
+            <span class="q-go-kbd"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.6v3.2a1.6 1.6 0 0 1-1.6 1.6H2M4.2 5.2 2 7.4l2.2 2.2"/></svg></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="stage-note">Radio select → Continue arms → the mascot's rainbow bloom fires on confirm.</div>
+  </section>
+
+  <!-- 2 ── THINKING ──────────────────────────────────────────────────── -->
+  <section class="stage">
+    <div class="stage-label"><i></i>Thinking</div>
+    <div class="box ring">
+      <div class="t-wrap" id="tWrap"></div>
+    </div>
+    <div class="stage-note">Cursor's reasoning row: spinning silver arc over a shimmering label, then the tool-use checklist settles row by row.</div>
+  </section>
+
+  <!-- 3 ── CODE BLOCK ────────────────────────────────────────────────── -->
+  <section class="stage">
+    <div class="stage-label"><i></i>Code block</div>
+    <div class="box ring">
+      <div class="c-card ring" id="cCard">
+        <div class="c-head">
+          <span class="c-chip">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.4 3.4 1.8 6l2.6 2.6M7.6 3.4 10.2 6 7.6 8.6"/></svg>
+          </span>
+          <span class="c-name">input-demo.html</span>
+          <span class="c-status is-writing" id="cStatus"><i></i>Writing</span>
+          <button class="c-copy" type="button" aria-label="Copy code" id="cCopy">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round" aria-hidden="true"><rect x="4.6" y="4.6" width="7.4" height="7.4" rx="1.4"/><path d="M9.4 3.2V2.8A1.4 1.4 0 0 0 8 1.4H3.2A1.4 1.4 0 0 0 1.8 2.8V8a1.4 1.4 0 0 0 1.4 1.4h.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <pre class="c-code" id="cCode" aria-label="Code"><code id="cCodeIn"></code></pre>
+      </div>
+    </div>
+    <div class="stage-note">Lines paint one at a time behind a caret; the status flips Writing → Complete.</div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
