@@ -1,0 +1,147 @@
+/* Variant C — ORDER CARD. Artifact-first: the ticket IS the artifact and the
+   conversation is a one-line aside.
+   Palette, radii, hairlines and motion curves are lifted from styles.css; the
+   silver outline is the shared `.ring` (plus `.is-sweep` for the travelling
+   highlight). Keyframes reused from styles.css: rise, t-pulse, q-out.
+   Every local class is prefixed .vo- so nothing collides with the other variants. */
+
+.vo-card {
+  position: relative;
+  width: 100%;
+  max-width: min(300px, 100%);
+  min-height: 356px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 15px 14px;
+  border-radius: 16px;
+  background: #111113;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  color: #e6e8ee;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: -0.1px;
+  animation: rise 0.3s ease-out backwards;
+}
+.vo-card.is-out { animation: q-out 0.26s ease-in forwards; }
+
+/* ---------- header: ticket number + drafting → ready pill ---------------- */
+
+.vo-top { display: flex; align-items: center; gap: 8px; }
+.vo-no {
+  font: 500 11.5px ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: 0.2px; color: #f4f5f8;
+}
+.vo-pill {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 8px 2px 7px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 9.5px; font-weight: 620; letter-spacing: 0.55px; text-transform: uppercase;
+  color: #8b90a0;
+  transition: color 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+}
+.vo-pill i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.vo-pill.is-draft i { animation: t-pulse 1.05s ease-in-out infinite; }
+.vo-pill.is-ready {
+  color: #5fd08a;
+  background: rgba(95, 208, 138, 0.07);
+  border-color: rgba(95, 208, 138, 0.28);
+}
+.vo-pill.is-pop { animation: vo-pop 0.34s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes vo-pop { 0% { transform: scale(0.86); } 60% { transform: scale(1.07); } 100% { transform: scale(1); } }
+
+/* ---------- the user's line, as a muted aside --------------------------- */
+
+.vo-quote { margin-top: 10px; font-size: 12px; color: #8b90a0; letter-spacing: -0.05px; }
+
+/* ---------- line items -------------------------------------------------- */
+
+.vo-items { margin-top: 13px; min-height: 96px; display: flex; flex-direction: column; }
+
+.vo-row {
+  display: flex; align-items: baseline; gap: 6px;
+  padding: 6px 0;
+  animation: rise 0.26s ease-out backwards;
+}
+.vo-name {
+  color: #e6e8ee; font-size: 13px; letter-spacing: -0.1px;
+  max-width: 66%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  transition: color 0.25s ease;
+}
+.vo-lead {
+  flex: 1; min-width: 8px; align-self: center;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+.vo-price {
+  margin-left: auto;
+  color: #c9ccd6; font-size: 12.5px; font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.25s ease;
+}
+/* a row the next line supersedes (the burger becomes the meal) — kept on the
+   ticket, greyed, so the total is legible rather than silently rewritten */
+.vo-row.is-sup .vo-name { color: #6b7080; }
+.vo-row.is-sup .vo-price {
+  color: #6b7080;
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 255, 255, 0.28);
+}
+
+/* ---------- the total --------------------------------------------------- */
+
+.vo-total {
+  display: flex; align-items: baseline; gap: 8px;
+  margin-top: 3px; padding-top: 11px;
+  border-top: 1px solid rgba(255, 255, 255, 0.045);
+  color: #f4f5f8; font-weight: 620; letter-spacing: -0.1px;
+}
+.vo-sum {
+  margin-left: auto;
+  font-size: 14.5px; font-weight: 620; letter-spacing: -0.2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- the assistant line, updating in place ----------------------- */
+
+.vo-say { margin-top: 13px; min-height: 17px; font-size: 12.5px; color: #8b90a0; letter-spacing: -0.05px; }
+.vo-say.is-in { animation: rise 0.22s ease-out; }
+
+/* ---------- the questions, as compact segmented pills ------------------- */
+
+/* the frame is a fixed 356px and this region takes the slack, so the card never
+   changes height when a question wraps to three lines */
+.vo-ask {
+  flex: 1 1 auto; min-height: 0;
+  margin-top: 11px;
+  display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px;
+}
+.vo-ask.is-out { animation: q-out 0.24s ease-in forwards; }
+
+.vo-opt {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 9px; border-radius: 999px;
+  background: #17171a; border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #c9ccd6; font-size: 11.5px; letter-spacing: -0.05px; white-space: nowrap;
+  animation: rise 0.24s ease-out backwards;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.16s ease;
+}
+.vo-opt-x {
+  color: #8b90a0; font-size: 11px; font-variant-numeric: tabular-nums;
+  transition: color 0.18s ease;
+}
+.vo-opt.is-on {
+  background: #202024; border-color: rgba(255, 255, 255, 0.14);
+  color: #f0f1f5; transform: translateY(-1px);
+}
+.vo-opt.is-on .vo-opt-x { color: #c9ccd6; }
+
+/* ---------- reduced motion ---------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .vo-card, .vo-row, .vo-opt, .vo-say.is-in { animation: none; opacity: 1; transform: none; }
+  .vo-card.is-out, .vo-ask.is-out { animation: none; opacity: 1; transform: none; }
+  .vo-pill.is-draft i, .vo-pill.is-pop { animation: none; }
+}

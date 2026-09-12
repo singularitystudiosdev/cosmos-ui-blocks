@@ -360,6 +360,14 @@ body {
 .d-badge svg { display: block; width: 10px; height: 10px; color: #e8eaf0; }
 .d-desc { margin: 7px 0 0; font-size: 12.5px; line-height: 1.5; letter-spacing: -0.05px; color: #8b90a0; }
 
+/* ---------- the variants section ---------------------------------------- */
+
+.sect { max-width: 1000px; margin: 60px auto 0; }
+.sect h2 { margin: 0 0 8px; font-size: 18px; font-weight: 620; letter-spacing: -0.3px; color: #f4f5f8; }
+.sect-lede { margin: 0 0 26px; font-size: 13.5px; line-height: 1.55; letter-spacing: -0.1px; color: #8b90a0; }
+.sect-lede em { font-style: normal; color: #c9ccd6; }
+.grid--variants { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
 /* ---------- reduced motion ---------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {

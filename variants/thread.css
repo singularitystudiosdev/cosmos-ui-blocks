@@ -1,0 +1,235 @@
+/* ==========================================================================
+   Variant A · Thread — conversation-first. The transcript IS the artifact.
+   Style source: ../styles.css (palette, hairlines, radii, motion). The silver
+   outline comes free from `.ring`; keyframes rise / q-out / spin / t-pulse /
+   radio-pop / c-pop are reused by name, never redeclared here.
+   Every local class is prefixed .vt- so nothing collides with the other cards.
+   ========================================================================== */
+
+.vt-card {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  background: #111113;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  color: #e6e8ee;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12.5px;
+  letter-spacing: -0.1px;
+  overflow: hidden;
+  animation: rise 0.3s ease-out backwards;
+}
+.vt-card.is-out { animation: q-out 0.26s ease-in forwards; }
+
+/* the chat viewport: bottom-anchored, so new rows push the older ones up and
+   the newest beat is always the one in view */
+.vt-scroll {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 9px;
+  padding: 12px 12px 13px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 13px);
+  mask-image: linear-gradient(180deg, transparent 0, #000 13px);
+}
+
+/* ---------- messages ----------------------------------------------------- */
+
+.vt-row { display: flex; animation: rise 0.26s ease-out; }
+.vt-row.is-user { justify-content: flex-end; }
+.vt-row.is-asst { justify-content: flex-start; }
+
+.vt-bub {
+  max-width: 86%;
+  padding: 7px 11px;
+  font-size: 12.5px;
+  line-height: 1.38;
+  letter-spacing: -0.1px;
+}
+.vt-bub.is-user {
+  background: linear-gradient(180deg, #f2f3f7, #c9ccd6);
+  color: #1a1a1c;
+  font-weight: 500;
+  border-radius: 14px 14px 5px 14px;
+}
+.vt-bub.is-asst {
+  background: #17171a;
+  border: 1px solid rgba(255, 255, 255, 0.045);
+  color: #e6e8ee;
+  border-radius: 14px 14px 14px 5px;
+}
+.vt-bub.is-final {
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+}
+.vt-bub.is-final svg {
+  width: 11px; height: 11px; flex-shrink: 0; color: #5fd08a;
+  animation: c-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------- a burst of tool calls: one container, one mono row per call ---- */
+
+.vt-burst {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.045);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.018);
+  animation: rise 0.26s ease-out;
+}
+
+.vt-call {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  font: 400 10.5px/1.5 ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: 0;
+  color: #8b90a0;
+}
+.vt-call-ic { flex-shrink: 0; width: 11px; height: 11px; display: inline-flex; color: #9aa0b4; }
+.vt-call-ic svg { width: 11px; height: 11px; display: block; }
+.vt-call-ic svg { animation: spin 0.9s linear infinite; }
+.vt-call-nm {
+  min-width: 0; color: #c9ccd6;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.vt-call-st {
+  flex-shrink: 0; margin-left: auto; display: inline-flex; align-items: center; gap: 4px;
+  color: #c9ccd6; white-space: nowrap;
+}
+.vt-call.is-done .vt-call-ic { color: #5fd08a; }
+.vt-call.is-done .vt-call-ic svg { animation: none; }
+.vt-call.is-done .vt-call-nm { color: #6b7080; }
+.vt-call-st.is-pop { animation: c-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+.vt-dots { display: inline-flex; gap: 3px; }
+.vt-dots i {
+  width: 3px; height: 3px; border-radius: 50%; background: #8b90a0;
+  animation: t-pulse 1.05s ease-in-out infinite;
+}
+.vt-dots i:nth-child(2) { animation-delay: 0.18s; }
+.vt-dots i:nth-child(3) { animation-delay: 0.36s; }
+
+/* ---------- the clarifying question — the house pattern, .vt- prefixed ---- */
+
+.vt-ask {
+  padding: 11px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  background: #0f0f11;
+  animation: rise 0.28s ease-out;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.vt-ask.is-fade { opacity: 0; transform: translateY(3px); }
+
+.vt-ask-top {
+  display: flex; align-items: center; gap: 7px;
+  color: #8b90a0; font-size: 12px; font-weight: 500; letter-spacing: 0.1px;
+}
+.vt-ask-top svg { width: 13px; height: 13px; flex-shrink: 0; color: #b9bcc6; }
+
+.vt-ask-q {
+  margin-top: 8px;
+  font-size: 14px; font-weight: 620; letter-spacing: -0.2px; line-height: 1.28;
+  color: #f4f5f8;
+}
+
+.vt-ask-body { margin-top: 9px; display: flex; flex-direction: column; gap: 5px; }
+
+.vt-opt {
+  display: flex; align-items: center; gap: 9px;
+  width: 100%; margin: 0;
+  padding: 6px 10px;
+  background: #17171a;
+  border: 1px solid rgba(255, 255, 255, 0.045);
+  border-radius: 10px;
+  color: #c9ccd6;
+  font: inherit; font-size: 12.5px; letter-spacing: -0.1px; text-align: left;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.14s ease;
+}
+.vt-opt.is-sel { background: #202024; border-color: rgba(255, 255, 255, 0.14); color: #f0f1f5; }
+
+.vt-opt-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vt-opt-m {
+  margin-left: auto; flex-shrink: 0; font-size: 12px; color: #8b90a0;
+  font-variant-numeric: tabular-nums;
+}
+.vt-opt.is-sel .vt-opt-m { color: #c9ccd6; }
+
+/* the 19px radio: a filled disc that pops on select — same geometry as .q-radio */
+.vt-radio {
+  position: relative; flex-shrink: 0;
+  width: 19px; height: 19px; border-radius: 50%;
+  background: #3a3a3e;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.vt-radio::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: #f7f8fa; transform: scale(0); opacity: 0;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.16s ease;
+}
+.vt-opt.is-sel .vt-radio { background: #2c2c31; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18); }
+.vt-opt.is-sel .vt-radio::after { transform: scale(1); opacity: 1; }
+.vt-opt.is-pop .vt-radio { animation: radio-pop 0.34s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+.vt-ask-foot { display: flex; align-items: center; justify-content: flex-end; margin-top: 10px; }
+
+/* the light Continue pill, with the white bloom on confirm */
+.vt-go {
+  position: relative; z-index: 0;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 13px;
+  background: linear-gradient(180deg, #f2f3f7, #c9ccd6);
+  color: #1a1a1c;
+  border: none; border-radius: 999px;
+  font: 620 12.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.1px; cursor: pointer;
+  transition: background 0.15s ease, transform 0.14s ease, opacity 0.18s ease;
+  --glow: #ffffff;
+}
+.vt-go.is-idle { opacity: 0.42; }
+.vt-go.is-arm { transform: scale(1.035); }
+.vt-go::before, .vt-go::after {
+  content: ""; position: absolute; background: var(--glow);
+  z-index: -1; opacity: 0; transition: opacity 250ms ease; pointer-events: none;
+}
+.vt-go::before { inset: -3px; border-radius: 999px; filter: blur(16px); }
+.vt-go::after { inset: -10px; border-radius: 999px; filter: blur(40px); }
+.vt-go.is-bloom {
+  background: linear-gradient(180deg, #f2f3f7, #c9ccd6) padding-box, var(--glow) border-box;
+  border: 1px solid transparent;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+.vt-go.is-bloom::before { opacity: 0.3; }
+.vt-go.is-bloom::after { opacity: 0.16; }
+.vt-go-kb { display: inline-flex; font-weight: 500; opacity: 0.7; }
+.vt-go-kb svg { width: 12px; height: 12px; display: block; }
+
+/* ---------- reduced motion: the transcript, static and readable ----------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .vt-card { height: auto; }
+  .vt-scroll {
+    justify-content: flex-start;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .vt-call-ic svg { animation: none; }
+  .vt-dots i { animation: none; opacity: 0.7; }
+  .vt-ask { transition: none; }
+}
