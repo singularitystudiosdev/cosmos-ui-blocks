@@ -367,6 +367,7 @@ body {
 .sect-lede { margin: 0 0 26px; font-size: 13.5px; line-height: 1.55; letter-spacing: -0.1px; color: #8b90a0; }
 .sect-lede em { font-style: normal; color: #c9ccd6; }
 .grid--variants { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.vwrap { width: 100%; display: flex; justify-content: center; }
 
 /* ---------- reduced motion ---------------------------------------------- */
 

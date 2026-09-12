@@ -1,0 +1,101 @@
+/* ==========================================================================
+   Variant B · Inline — assistant-app style. Style source: ../styles.css.
+   Silver outline from `.ring`; keyframes rise / q-out / spin / radio-pop /
+   c-pop reused by name. Every class is prefixed .vi-.
+   ========================================================================== */
+
+.vi-card {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 14px 14px 15px;
+  border-radius: 16px;
+  background: #111113;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  color: #e6e8ee;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12.5px; letter-spacing: -0.1px; line-height: 1.42;
+  animation: rise 0.3s ease-out backwards;
+}
+.vi-card.is-out { animation: q-out 0.26s ease-in forwards; }
+
+/* ---------- the user turn: a quiet block on the right --------------------- */
+
+.vi-user { display: flex; justify-content: flex-end; animation: rise 0.26s ease-out; }
+.vi-user-t {
+  max-width: 84%; padding: 7px 11px;
+  background: #1c1c20; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px;
+  color: #f0f1f5; font-weight: 500;
+}
+
+/* ---------- the assistant turn: mark + body column ------------------------ */
+
+.vi-asst { display: flex; gap: 9px; align-items: flex-start; animation: rise 0.26s ease-out; }
+.vi-mark { flex-shrink: 0; width: 18px; height: 18px; margin-top: 1px; display: inline-flex; }
+.vi-mark svg { width: 18px; height: 18px; display: block; }
+.vi-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+
+.vi-text { color: #e6e8ee; animation: rise 0.22s ease-out; }
+.vi-text.is-q { font-weight: 620; color: #f4f5f8; letter-spacing: -0.15px; }
+.vi-text.is-final { display: inline-flex; align-items: center; gap: 7px; color: #f0f1f5; }
+.vi-text.is-final svg { width: 11px; height: 11px; flex-shrink: 0; color: #5fd08a; animation: c-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* ---------- tool calls on a hairline rail --------------------------------- */
+
+.vi-rail { display: flex; flex-direction: column; gap: 4px; padding-left: 9px; border-left: 1px solid rgba(255, 255, 255, 0.08); }
+.vi-tool {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px; min-width: 0;
+  font: 400 10.5px/1.6 ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: 0; color: #8b90a0;
+  animation: rise 0.22s ease-out;
+}
+.vi-tool-ic { flex-shrink: 0; width: 11px; height: 11px; display: inline-flex; color: #9aa0b4; }
+.vi-tool-ic svg { width: 11px; height: 11px; display: block; animation: spin 0.9s linear infinite; }
+.vi-tool.is-done .vi-tool-ic { color: #5fd08a; }
+.vi-tool.is-done .vi-tool-ic svg { animation: none; }
+.vi-tool-nm { color: #e6e8ee; }
+.vi-tool.is-done .vi-tool-nm { color: #c9ccd6; }
+.vi-tool-args { min-width: 0; color: #6b7080; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vi-tool-chev { margin-left: auto; flex-shrink: 0; width: 10px; height: 10px; display: inline-flex; color: #6b7080; transition: transform 0.2s ease; }
+.vi-tool-chev svg { width: 10px; height: 10px; display: block; }
+.vi-tool.is-done .vi-tool-chev { transform: rotate(90deg); }
+.vi-tool-res { flex-basis: 100%; padding-left: 17px; color: #8b90a0; }
+.vi-tool-res.is-in { animation: rise 0.2s ease-out; }
+
+/* ---------- the bare radio list ------------------------------------------- */
+
+.vi-radios { display: flex; flex-direction: column; gap: 3px; }
+.vi-radio-row {
+  display: flex; align-items: center; gap: 8px; padding: 4px 6px; margin: 0 -6px;
+  border-radius: 8px; color: #c9ccd6;
+  transition: background 0.18s ease, color 0.18s ease, opacity 0.22s ease, transform 0.22s ease;
+}
+.vi-radio-row.is-sel { background: rgba(255, 255, 255, 0.05); color: #f4f5f8; }
+.vi-radio-row.is-gone { opacity: 0; transform: translateY(-3px); }
+.vi-radio-row.is-pop .vi-radio { animation: radio-pop 0.34s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.vi-radio { position: relative; flex-shrink: 0; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #3a3a3e; transition: border-color 0.2s ease; }
+.vi-radio::after { content: ""; position: absolute; inset: 2.5px; border-radius: 50%; background: #f7f8fa; transform: scale(0); transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.vi-radio-row.is-sel .vi-radio { border-color: #c9ccd6; }
+.vi-radio-row.is-sel .vi-radio::after { transform: scale(1); }
+.vi-radio-tick { flex-shrink: 0; width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; color: #5fd08a; }
+.vi-radio-tick svg { width: 11px; height: 11px; }
+.vi-radio-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vi-radio-m { margin-left: auto; flex-shrink: 0; color: #6b7080; font-size: 12px; font-variant-numeric: tabular-nums; }
+.vi-radio-row.is-sel .vi-radio-m { color: #8b90a0; }
+
+/* Continue as a text control, not a pill */
+.vi-go {
+  align-self: flex-start; margin: 2px 0 0; padding: 3px 0; border: none; background: none;
+  color: #f4f5f8; font: 620 12.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.1px; cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  transition: opacity 0.2s ease, color 0.15s ease, border-color 0.15s ease, transform 0.22s ease;
+}
+.vi-go.is-idle { opacity: 0.4; }
+.vi-go.is-hit { color: #ffffff; border-color: #ffffff; }
+.vi-go.is-gone { opacity: 0; transform: translateY(-3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .vi-tool-ic svg { animation: none; }
+}

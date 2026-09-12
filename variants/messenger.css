@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Variant C · Messenger — a messaging app. Style source: ../styles.css.
+   Silver outline from `.ring`; keyframes rise / q-out / spin / c-pop reused
+   by name. Every class is prefixed .vm-.
+   ========================================================================== */
+
+.vm-card {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 16px;
+  background: #111113;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  color: #e6e8ee;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12.5px; letter-spacing: -0.1px;
+  overflow: hidden;
+  animation: rise 0.3s ease-out backwards;
+}
+.vm-card.is-out { animation: q-out 0.26s ease-in forwards; }
+
+/* ---------- header -------------------------------------------------------- */
+
+.vm-head {
+  display: flex; align-items: center; gap: 9px; padding: 9px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.vm-av { flex-shrink: 0; width: 26px; height: 26px; display: inline-flex; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12); }
+.vm-av svg { width: 26px; height: 26px; display: block; }
+.vm-who { display: flex; flex-direction: column; line-height: 1.2; }
+.vm-name { font-size: 12.5px; font-weight: 620; color: #f4f5f8; letter-spacing: -0.1px; }
+.vm-live { display: inline-flex; align-items: center; gap: 5px; margin-top: 2px; font-size: 10.5px; color: #8b90a0; }
+.vm-live::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #5fd08a; }
+
+/* ---------- the feed ------------------------------------------------------ */
+
+.vm-feed { display: flex; flex-direction: column; gap: 6px; padding: 12px 12px 13px; }
+
+.vm-row { display: flex; flex-direction: column; animation: rise 0.24s ease-out; }
+.vm-row.is-user { align-items: flex-end; }
+.vm-row.is-asst { align-items: flex-start; }
+.vm-row.is-asst + .vm-row.is-asst { margin-top: -3px; }
+
+.vm-bub { max-width: 82%; padding: 7px 12px; border-radius: 17px; font-size: 12.5px; line-height: 1.38; }
+.vm-bub.is-user { background: #e8eaf0; color: #1a1a1c; font-weight: 500; }
+.vm-bub.is-asst { background: #1c1c21; color: #e6e8ee; }
+.vm-bub.is-in { animation: rise 0.2s ease-out; }
+.vm-bub.is-final { display: inline-flex; align-items: center; gap: 7px; }
+.vm-tick { display: inline-flex; width: 11px; height: 11px; flex-shrink: 0; color: #5fd08a; animation: c-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.vm-tick svg { width: 11px; height: 11px; }
+.vm-meta { margin: 3px 4px 0 0; font-size: 10px; color: #6b7080; }
+
+/* typing: three dots that ripple */
+.vm-bub.is-typing { padding: 9px 12px; }
+.vm-typing { display: inline-flex; gap: 3px; height: 8px; align-items: center; }
+.vm-typing i { width: 5px; height: 5px; border-radius: 50%; background: #8b90a0; animation: vm-ripple 1.1s ease-in-out infinite; }
+.vm-typing i:nth-child(2) { animation-delay: 0.16s; }
+.vm-typing i:nth-child(3) { animation-delay: 0.32s; }
+@keyframes vm-ripple { 0%, 100% { transform: translateY(0); opacity: 0.45; } 40% { transform: translateY(-2.5px); opacity: 1; } }
+
+/* ---------- tool calls as centred system lines ---------------------------- */
+
+.vm-sys {
+  align-self: center; display: inline-flex; align-items: center; gap: 5px; max-width: 100%;
+  margin: 1px 0; font-size: 10.5px; color: #6b7080; letter-spacing: 0;
+  animation: rise 0.22s ease-out;
+}
+.vm-sys-ic { flex-shrink: 0; width: 10px; height: 10px; display: inline-flex; color: #8b90a0; }
+.vm-sys-ic svg { width: 10px; height: 10px; display: block; animation: spin 0.9s linear infinite; }
+.vm-sys.is-done .vm-sys-ic { color: #5fd08a; }
+.vm-sys.is-done .vm-sys-ic svg { animation: none; }
+.vm-sys-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vm-sys.is-run .vm-sys-t { color: #8b90a0; }
+
+/* ---------- quick replies ------------------------------------------------- */
+
+.vm-quick { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; animation: rise 0.24s ease-out; transition: opacity 0.2s ease, transform 0.2s ease; }
+.vm-quick.is-gone { opacity: 0; transform: translateY(3px); }
+.vm-chip {
+  padding: 5px 10px; border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14); background: transparent; color: #c9ccd6;
+  font-size: 11.5px; font-weight: 500; letter-spacing: -0.05px; white-space: nowrap;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.vm-chip.is-sel { background: #e8eaf0; border-color: #e8eaf0; color: #1a1a1c; }
+.vm-chip.is-pop { animation: c-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .vm-typing i, .vm-sys-ic svg { animation: none; }
+}
