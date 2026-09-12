@@ -258,3 +258,40 @@ const CHECK_IC = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" str
 
   run();
 })();
+
+/* ======================================================================== */
+/* 4. TASK COMPLETE                                                          */
+/* ======================================================================== */
+
+(function taskLoop() {
+  const card = document.getElementById("dCard");
+  const media = document.getElementById("dMedia");
+  if (!card || !media) return;
+
+  const replay = (el, cls) => {
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+  };
+
+  const run = async () => {
+    for (;;) {
+      card.classList.remove("is-out");
+      card.style.animation = "none";
+      void card.offsetWidth;
+      card.style.animation = "";
+      media.classList.remove("is-sheen");
+      void media.offsetWidth;
+
+      await sleep(340);
+      replay(media, "is-sheen");
+      replay(card, "is-sweep");
+      await sleep(2800);
+
+      card.classList.add("is-out");
+      await sleep(340);
+    }
+  };
+
+  run();
+})();
